@@ -1,3 +1,5 @@
 hello.js
 *.swp
 out
+game_of_life.js
+cljs-out

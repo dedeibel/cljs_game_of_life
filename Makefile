@@ -1,5 +1,8 @@
 
-all: hello.js
+all: game_of_life.js
 
-hello.js: hello.cljs
-	cljsc hello.cljs '{:optimizations :advanced}' > hello.js
+DEPS = $(shell find src -name "*.clj")
+
+game_of_life.js: ${DEPS}
+	cljsc src '{:optimizations :advanced :output-dir "cljs-out"}' > $@
+
