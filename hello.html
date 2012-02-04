@@ -1,9 +1,13 @@
 <html>
   <head></head>
   <body>
-    <script type="text/javascript" src="hello.js"></script>
+		<h1>Clojurescript Game Of Life</h1>
+    <script type="text/javascript" src="game_of_life.js"></script>
+    <canvas id="surface" width="500" height="500">
+      Your browser does not support HTML5 Canvas.
+    </canvas>
     <script>
-      alert(hello.greet("ClojureScript"));
+      game_of_life.core.init();
     </script>
   </body>
 </html>

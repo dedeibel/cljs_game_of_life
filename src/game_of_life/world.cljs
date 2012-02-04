@@ -108,11 +108,13 @@
 
 (defn living [neighbours]
   "Returns a map of neighbours only containing living cells."
-  (util/filter-map [key val] (:alive val) neighbours)
+	; TODO
+;  (util/filter-map [key val] (:alive val) neighbours)
 )
 
 (defn dead [neighbours]
   "Returns a map of neighbours only containing dead cells."
-  (util/filter-map [key val] (not (:alive val)) neighbours)
+	; TODO
+;  (util/filter-map [key val] (not (:alive val)) neighbours)
 )
 

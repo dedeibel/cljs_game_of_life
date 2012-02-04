@@ -47,6 +47,10 @@
   (recur (game/next_generation world))
 )
 
+(defn ^:export init []
+	(js/alert "hello")
+)
+
 (defn -main []
   (next_gen (builder/from_string term54 cell/new_cell))
 )
