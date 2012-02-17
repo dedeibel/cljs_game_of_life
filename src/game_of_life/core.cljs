@@ -3,6 +3,7 @@
   (:require [game_of_life.world_printer :as printer])
   (:require [game_of_life.world_builder :as builder])
   (:require [game_of_life.game :as game])
+  (:require [goog.dom :as dom])
 )
 
 (def blinker
@@ -48,7 +49,9 @@
 )
 
 (defn ^:export init []
-	(js/alert "hello")
+  (let [pre (dom/getElement "pre")]
+	  (set-html! pre "test!")
+  )
 )
 
 (defn -main []
