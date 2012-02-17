@@ -3,6 +3,7 @@
   (:require [game_of_life.world_printer :as printer])
   (:require [game_of_life.world_builder :as builder])
   (:require [game_of_life.game :as game])
+  (:require [twitterbuzz.dom-helpers :as domh])
 )
 
 (def blinker
@@ -48,7 +49,7 @@
 )
 
 (defn ^:export init []
-	(js/alert "hello")
+	(js/alert (str (domh/get-element "surface")))
 )
 
 (defn -main []
