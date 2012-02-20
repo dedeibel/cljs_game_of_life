@@ -5,22 +5,13 @@
             [game_of_life.world_printer :as printer]
             [game_of_life.world_builder :as builder]
             [game_of_life.game :as game]
+            [game_of_life.view :as view]
             [goog.graphics :as graphics])
 )
 
 (def DEFAULT-WIDTH 440)
 
 (def DEFAULT-HEIGHT 440)
-
-(def stroke-black (graphics/Stroke. 1 "#000"))
-(def stroke-white (graphics/Stroke. 1 "#FFF"))
-
-(def fill-white (graphics/SolidFill. "#fff"))
-(def fill-black (graphics/SolidFill. "#000"))
-
-(def g (doto (graphics/createGraphics 
-              (str DEFAULT-WIDTH) (str DEFAULT-HEIGHT))
-             (.render (domh/get-element "graphics"))))
 
 (def blinker
 " x 
@@ -64,10 +55,21 @@
   (recur (game/next_generation world))
 )
 
+; Zwei zeichen Versionen
+; - locked view, statischer Ausschnitt
+; - all view, linker oberer rand immer so dass alles zu sehen ist
+; - skalieren vorsehen
+
 (defn ^:export init []
-  (.clear g true)
-  (.drawRect g  10 10 100 200 stroke-black fill-white)
-  (.drawCircle g  20 20 2 stroke-black fill-black)
+  (-> (view/new_world (domh/get-element "graphics") 100 100)
+    (view/draw_living  0  0)
+    (view/draw_living 50 50)
+    (view/draw_living 99 99)
+    (view/clear)
+    (view/draw_living 10 10)
+    (view/draw_living  8  8)
+    (view/draw_dead    8  8)
+  )
 )
 
 (defn -main []
