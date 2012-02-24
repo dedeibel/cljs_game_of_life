@@ -1,6 +1,6 @@
 (ns game_of_life.world
   (:require [game_of_life.cell :as cell])
-  (:require [name.benjaminpeter.util :as util])
+  (:require-macros [name.benjaminpeter.util :as util])
 )
 
 (defprotocol World
@@ -108,13 +108,11 @@
 
 (defn living [neighbours]
   "Returns a map of neighbours only containing living cells."
-	; TODO
-;  (util/filter-map [key val] (:alive val) neighbours)
+  (util/filter-map [key val] (:alive val) neighbours)
 )
 
 (defn dead [neighbours]
   "Returns a map of neighbours only containing dead cells."
-	; TODO
-;  (util/filter-map [key val] (not (:alive val)) neighbours)
+  (util/filter-map [key val] (not (:alive val)) neighbours)
 )
 

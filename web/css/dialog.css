@@ -1,0 +1,29 @@
+.modal-dialog {
+    background: none repeat scroll 0 0 #CCCCCC;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: 4px;
+    position: absolute;
+}
+.modal-dialog a, .modal-dialog a:link, .modal-dialog a:visited {
+    color: #0066CC;
+    cursor: pointer;
+}
+.modal-dialog-bg {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.modal-dialog-title {
+    background: none repeat scroll 0 0 #CCCCCC;
+    color: #000000;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 5px 25px 6px 6px;
+    position: relative;
+}
+.modal-dialog-buttons, .modal-dialog-content {
+    background-color: #FFFFFF;
+    padding: 10px;
+}
+

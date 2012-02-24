@@ -3,3 +3,5 @@ hello.js
 out
 game_of_life.js
 cljs-out
+.lein-deps-sum
+lib

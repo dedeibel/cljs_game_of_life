@@ -6,7 +6,9 @@
             [game_of_life.world_builder :as builder]
             [game_of_life.game :as game]
             [game_of_life.view :as view]
+            [game_of_life.view.outofrange :as outofrange]
             [goog.graphics :as graphics])
+  (:require-macros [name.benjaminpeter.util :as util])
 )
 
 (def DEFAULT-WIDTH 440)
@@ -61,14 +63,15 @@
 ; - skalieren vorsehen
 
 (defn ^:export init []
-  (-> (view/new_world (domh/get-element "graphics") 100 100)
-    (view/draw_living  0  0)
-    (view/draw_living 50 50)
-    (view/draw_living 99 99)
-    (view/clear)
-    (view/draw_living 10 10)
-    (view/draw_living  8  8)
-    (view/draw_dead    8  8)
+;  (util/add_exception_handler view/exception_handler
+  (try
+    (-> (view/new_world (view/ViewOptions. 100 100 5 5 outofrange/exception) (domh/get-element "graphics"))
+      (view/draw_living  0  0)
+      (view/draw_living 10 10)
+      (view/draw_living 20 20)
+      (view/draw_living -30 30)
+    )
+    (catch js/Object ex (view/exception_handler ex))
   )
 )
 
