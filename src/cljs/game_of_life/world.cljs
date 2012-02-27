@@ -58,7 +58,6 @@
     (get grid (WorldKey. x y))
   )
   (all_neighbours_of [this cell create_cell]
-  ; bpeter todo macro the zipmap thing?
     (zipmap
       (neighbour_keywords)
       (for [
@@ -66,8 +65,9 @@
           :when (not (= 0 xOffset yOffset))
         ]
         (let [cur_x (+ (:x cell) xOffset)
-              cur_y (+ (:y cell) yOffset)]
-          (if-let [living_cell (retrieve this cur_x cur_y)]
+              cur_y (+ (:y cell) yOffset)
+              living_cell (retrieve this cur_x cur_y)]
+          (if living_cell
             living_cell
             (create_cell cur_x cur_y false)
           )

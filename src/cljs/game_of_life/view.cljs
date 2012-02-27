@@ -110,22 +110,17 @@
   ))
 )
 
-(defn exception_handler [exception]
-  ;(js/alert (str "Exception: " exception))
-    (doto (goog.ui.Dialog. nil true)
-      (.setContent (str exception))
-      (.setTitle "Exception")
-      (.setButtonSet (.createOk goog.ui.Dialog.ButtonSet))
-      (.setDraggable true)
-      (.setModal false)
-      (.setVisible true)
-    )
-    ;goog.events.listen(dialog2, goog.ui.Dialog.EventType.SELECT, function(e) {
-    ;  alert('You chose: ' + e.key);
-    ;});
-
-    ;goog.events.listen(window, 'unload', function() {
-    ;  goog.events.removeAll();
-    ;});
+(defn exception_handler
+  "Displays the exception using a google closure ui Dialog"
+  [exception]
+  (doto (goog.ui.Dialog. nil true)
+    (.setContent (str exception))
+    (.setTitle "Exception")
+    (.setButtonSet (.createOk goog.ui.Dialog.ButtonSet))
+    (.setDraggable true)
+    (.setModal false)
+    (.setVisible true)
+  )
+  nil
 )
 

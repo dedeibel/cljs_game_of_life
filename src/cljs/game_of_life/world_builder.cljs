@@ -1,5 +1,6 @@
 (ns game_of_life.world_builder
   (:require [game_of_life.world :as world])
+  (:require-macros [name.benjaminpeter.util :as util])
 )
 
 (defprotocol CellBuilder
@@ -24,7 +25,7 @@
        "stopping when none are left.")
   (if-let [desc (seq world_desc)]
     (recur 
-      (case (first desc)
+      (condp = (first desc)
         \X (living builder)
         \x (living builder)
         \. (dead builder)

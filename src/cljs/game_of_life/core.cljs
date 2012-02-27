@@ -6,6 +6,7 @@
             [game_of_life.world_builder :as builder]
             [game_of_life.game :as game]
             [game_of_life.view :as view]
+            [game_of_life.world :as world]
             [game_of_life.view.outofrange :as outofrange]
             [goog.graphics :as graphics])
   (:require-macros [name.benjaminpeter.util :as util])
@@ -49,13 +50,15 @@
 ,xxx"
 )
 
-(defn next_gen [world]
-  (str "Calculates and displays the next generation of the world. "
-       "After each generation it waits for the user to press enter.")
-  (println (printer/to_string world))
-  (read-line)
-  (recur (game/next_generation world))
-)
+(defn call_after [ms callback]
+  (js/setTimeout callback ms))
+
+(defn next_gen [view world]
+  (.log js/console "paint")
+  (view/clear view)
+  (doseq [living (world/living_cells world)]
+    (view/draw_living view (+ 10 (:x living)) (+ 10 (:y living))))
+  (call_after 2000 #(next_gen view (game/next_generation world))))
 
 ; Zwei zeichen Versionen
 ; - locked view, statischer Ausschnitt
@@ -63,19 +66,13 @@
 ; - skalieren vorsehen
 
 (defn ^:export init []
-;  (util/add_exception_handler view/exception_handler
-  (try
-    (-> (view/new_world (view/ViewOptions. 100 100 5 5 outofrange/exception) (domh/get-element "graphics"))
-      (view/draw_living  0  0)
-      (view/draw_living 10 10)
-      (view/draw_living 20 20)
-      (view/draw_living -30 30)
-    )
-    (catch js/Object ex (view/exception_handler ex))
+    (let [view (-> (view/new_world (view/ViewOptions. 100 100 5 5 outofrange/ignore) (domh/get-element "graphics")))]
+;  (util/with_exception_handler view/exception_handler
+    (next_gen view (builder/from_string oscyl cell/new_cell))
+;  )
   )
 )
 
 (defn -main []
-  (next_gen (builder/from_string term54 cell/new_cell))
 )
 

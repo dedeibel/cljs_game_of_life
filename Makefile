@@ -1,10 +1,13 @@
 
 CLJ_SRC = src/clj
-CLJS_SRC = src/cljs
-DEPS = $(shell find "${CLJS_SRC}" -name "*.cljs")
+CLJS_SRC = src
+CLJ_DEPS = $(shell find "${CLJ_SRC}" -name "*.clj")
+CLJS_DEPS = $(shell find "${CLJS_SRC}" -name "*.cljs")
+DEPS = ${CLJS_DEPS} ${CLJ_DEPS}
 
 MAIN_JS = game_of_life.js
 OUTPUT_DIR = cljs-out
+NOTIFY_COMMAND = growlnotify -m compile-done cljs-watch
 ADDITIONAL_CLASSPATH = ${PWD}/${CLJ_SRC}
 
 # CLJS_ARGS = :optimizations :simple :pretty-print true 
@@ -21,9 +24,9 @@ ${MAIN_JS}: ${DEPS}
 
 .PHONY: watch
 watch: ${DEPS}
-	@export CLASSPATH=${CLASSPATH}:${ADDITIONAL_CLASSPATH}; cljs-watch -s "${CLJS_SRC}" -b '{${CLJS_ARGS}:output-dir "${OUTPUT_DIR}" :output-to "${MAIN_JS}"}'
+	@export CLASSPATH=${CLASSPATH}:${ADDITIONAL_CLASSPATH}; cljs-watch -s "${CLJS_SRC}" -c '${NOTIFY_COMMAND}' '{${CLJS_ARGS}:output-dir "${OUTPUT_DIR}" :output-to "${MAIN_JS}"}'
 
-.PHONY:clean
+.PHONY: clean
 clean:
 	rm -f "${MAIN_JS}"
 	rm -fr "${OUTPUT_DIR}"

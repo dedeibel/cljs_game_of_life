@@ -1,7 +1,7 @@
 (ns game_of_life.game
-  (:require [game_of_life.world :as world])
-  (:require [game_of_life.cell :as cell])
-)
+  (:require
+    [game_of_life.world :as world]
+    [game_of_life.cell  :as cell]))
 
 (defn- next_generation_of_cell [new_world world unchecked_cells]
   (str "Calculates the next generation of each cell. It has the "
@@ -13,13 +13,13 @@
        "currently living cells and their neighbours.")
   (if (seq unchecked_cells)
     (let [examined_cell (first unchecked_cells)
-          number_of_living_neighbours (number_of (living
+          number_of_living_neighbours (world/number_of (world/living
                           (world/neighbours_of world examined_cell)))]
       (recur
         (let [action (cell/next_cell_action examined_cell number_of_living_neighbours)]
-          (case action
+          (condp = action
             :kill    (world/kill new_world examined_cell)
-            :revive  (world/invigorate new_world (revive examined_cell))
+            :revive  (world/invigorate new_world (cell/revive examined_cell))
             new_world
         ))
         world
@@ -39,7 +39,7 @@
       (into
         [(first living_cells)]
         (into
-          (vals (world/dead (world/all_neighbours_of world (first living_cells) new_cell)))
+          (vals (world/dead (world/all_neighbours_of world (first living_cells) cell/new_cell)))
           (cells_to_check_step world (rest living_cells))
         )
       )
