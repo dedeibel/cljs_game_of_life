@@ -30,6 +30,14 @@
   (let [e (if (keyword? e) (get-element e) e)]
     (doto e (dom/setTextContent s))))
 
+(defn get-text
+  "Gets the text content for the passed element. If a keyword is passed in
+  the place of e, the element with
+  that id will be used."
+  [e s]
+  (let [e (if (keyword? e) (get-element e) e)]
+    (doto e (dom/getTextContent s))))
+
 (defn normalize-args [tag args]
   (let [parts (string/split (name tag) #"(\.|#)")
         [tag attrs] [(first parts)

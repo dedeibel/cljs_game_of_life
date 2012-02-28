@@ -11,8 +11,7 @@
 
 ; Only usefull for clojurescript! try catch without class type.
 (defmacro with_exception_handler [handler function]
-  `(try ~function (catch ex# (~handler ex#)))
-)
+  `(try ~function (catch ex# (~handler ex#))))
 
 ;(defmacro case [value & statements]
 ;  (for [[condition action] (partition 2 statements)]

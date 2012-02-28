@@ -116,3 +116,58 @@
   (util/filter-map [key val] (not (:alive val)) neighbours)
 )
 
+(defn test_add []
+  (and
+  (-> (new_world)       (invigorate (cell/new_cell 0 0)) (alive 0 0))
+  (not (-> (new_world)  (invigorate (cell/new_cell 0 0)) (alive 0 1)))
+  (-> (new_world)       (invigorate (cell/new_cell 1 0)) (alive 1 0))))
+
+(defn test_add_multi []
+    (-> (new_world)
+        (invigorate (cell/new_cell 1 1))
+        (invigorate (cell/new_cell 2 3))
+        (invigorate (cell/new_cell 10 22))
+        (alive 2 3)))
+
+(defn test_alive_kill []
+  (not (-> (new_world) (invigorate (cell/new_cell 0 1)) (kill 0 1) (alive 0 1))))
+
+(defn test_neighbours_not_self []
+  (let [world (-> (new_world)
+      (invigorate (cell/new_cell 1 1))
+      (invigorate (cell/new_cell 0 0))
+    )]
+    (and
+      (= 1 (count (filter #(when %1 true)
+        (vals (neighbours_of world 1 1)))))
+      (:nw (neighbours_of world 1 1)))))
+
+(defn test_neighbours_keys []
+(doseq [n (keys (neighbours_of (new_world) 1 1))]
+  (.log js/console n)
+)
+(=
+  (sort [:nw :n :ne :w :e :sw :s :se])
+  (sort (keys (neighbours_of (new_world) 1 1)))))
+
+(defn test_neighbours_vals []
+  (= 8 (count (vals (neighbours_of (new_world) 1 1)))))
+
+(defn test_neighbours_none []
+  (let [world (new_world)]
+    (and
+     (not (some #(true? %1) (vals (neighbours_of world 1 1)))))
+     (not (some #(true? %1) (vals (neighbours_of world 1 1))))))
+
+(defn test_neighbours_count []
+  (let [world (-> (new_world)
+      (invigorate (cell/new_cell 0 0 false))
+      (invigorate (cell/new_cell 1 0 true))
+      (invigorate (cell/new_cell 2 0 true))
+    )]
+    (and 
+      (map? (neighbours_of world 1 1))
+      (= 8 (number_of (neighbours_of world 1 1)))
+      (map? (living (neighbours_of world 1 1)))
+      (= 2 (number_of (living (neighbours_of world 1 1)))))))
+
