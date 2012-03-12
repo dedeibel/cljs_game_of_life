@@ -7,7 +7,16 @@ DEPS = ${CLJS_DEPS} ${CLJ_DEPS}
 
 MAIN_JS = game_of_life.js
 OUTPUT_DIR = cljs-out
-NOTIFY_COMMAND = growlnotify -m compile-done cljs-watch
+
+NOTIFY_COMMAND = -b
+UNAMEOS = $(shell uname)
+ifeq ($(UNAMEOS),Linux)
+  NOTIFY_COMMAND = -c 'kdialog --passivepopup cljs-compile-done 3'
+endif
+ifeq ($(UNAMEOS),Darwin)
+  NOTIFY_COMMAND = -c 'growlnotify -m compile-done cljs-watch'
+endif
+
 ADDITIONAL_CLASSPATH = ${PWD}/${CLJ_SRC}
 
 # CLJS_ARGS = :optimizations :simple :pretty-print true 
@@ -24,7 +33,7 @@ ${MAIN_JS}: ${DEPS}
 
 .PHONY: watch
 watch: ${DEPS}
-	@export CLASSPATH=${CLASSPATH}:${ADDITIONAL_CLASSPATH}; cljs-watch -s "${CLJS_SRC}" -c '${NOTIFY_COMMAND}' '{${CLJS_ARGS}:output-dir "${OUTPUT_DIR}" :output-to "${MAIN_JS}"}'
+	@export CLASSPATH=${CLASSPATH}:${ADDITIONAL_CLASSPATH}; cljs-watch -s "${CLJS_SRC}" ${NOTIFY_COMMAND} '{${CLJS_ARGS}:output-dir "${OUTPUT_DIR}" :output-to "${MAIN_JS}"}'
 
 .PHONY: clean
 clean:

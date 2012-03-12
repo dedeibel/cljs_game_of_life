@@ -59,7 +59,6 @@
 )
 
 (defn- check_range [view_settings x y]
-  (.log js/console (str "check range " x "x" y))
   (if (or (< x 0) (< y 0)
           (> x (columns view_settings)) (> y (rows view_settings)))
     ((:out_of_rangefn view_settings) x y)
