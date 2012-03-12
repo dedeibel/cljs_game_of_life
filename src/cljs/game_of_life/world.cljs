@@ -21,6 +21,7 @@
   (alive [this x y] "Tests if the cell at x y is alive.")
   (kill [this cell] [this x y] "Kill the cell at x y.")
   (retrieve [this x y] "Returns the cell at x y. Dead cells just return nil.")
+  (neighbours_list [this cell])
 )
 
 (defrecord WorldKey [x y])
@@ -78,6 +79,14 @@
   (all_neighbours_of [this x y create_cell]
     (all_neighbours_of this (WorldKey. x y) create_cell)
   )
+  (neighbours_list [this cell]
+    (for [
+        xOffset [-1 0 1] yOffset [-1 0 1]
+        :when (not (= 0 xOffset yOffset))
+      ]
+      (let [cur_x (+ (:x cell) xOffset)
+            cur_y (+ (:y cell) yOffset)]
+        (retrieve this cur_x cur_y))))
   (neighbours_of [this cell]
     (zipmap
       (neighbour_keywords)
@@ -141,6 +150,63 @@
       (= 1 (count (filter #(when %1 true)
         (vals (neighbours_of world 1 1)))))
       (:nw (neighbours_of world 1 1)))))
+
+(defn test_vector_eq []
+(=
+  (sort [:nw :n :ne :w :e :sw :s :se])
+  (sort [:nw :n :ne :w :e :sw :s :se])))
+
+(defn test_neighbours_list_empty []
+  (doseq [n (neighbours_list (new_world) (cell/new_cell 1 1))]
+    (.log js/console n))
+  (= [nil nil nil nil nil nil nil nil]
+     (neighbours_list (new_world) (cell/new_cell 1 1))))
+
+(defn test_for_when []
+  (= [0 2 3]
+    (for [
+        a [0 1 2 3]
+        :when (not (= a 1))
+     ] a)))
+
+(defn test_for_when_2d []
+  (= [[0 0] [0 2] [2 0] [2 2]]
+    (for [
+        a [0 1 2] b [0 1 2]
+        :when (not (or (= a 1) (= b 1)))
+     ] [a b])))
+
+(defn test_for_beta []
+  (= [[0 1] [1 0] [1 1]]
+     (for [
+         a [0 1] b [0 1]
+         :when (not (and (= 0 a) (= 0 b)))]
+       [a b])))
+
+(defn test_double_eq []
+  (let [a 0 b 0]
+    (= 0 a b)))
+
+(defn test_double_eq_all []
+  (let [a 0 b 1]
+    (= 0 a b)))
+
+(defn test_neighbour_iteration []
+  (= [[-1 -1] [-1 0] [-1 1]
+      [ 0 -1]        [ 0 1]
+      [ 1 -1] [1  0] [ 1 1]]
+    (for [
+        xOffset [-1 0 1] yOffset [-1 0 1]
+        :when (not (= 0 xOffset yOffset))
+     ] [xOffset yOffset])))
+
+(defn test_all_neighbour_iteration []
+  (= [[-1 -1] [-1 0] [-1 1]
+      [ 0 -1] [0  0] [ 0 1]
+      [ 1 -1] [1  0] [ 1 1]]
+    (for [
+        xOffset [-1 0 1] yOffset [-1 0 1]
+     ] [xOffset yOffset])))
 
 (defn test_neighbours_keys []
 (doseq [n (keys (neighbours_of (new_world) 1 1))]
