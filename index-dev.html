@@ -8,11 +8,12 @@
     <script type="text/javascript" src="game_of_life.js"></script>
     <script type="text/javascript">
       goog.require('game_of_life.core');
+      goog.require('game_of_life.test');
     </script>
-    <div id="graphics"/>
+    <div id="graphics"></div>
     <p id="ascii" style="font-size: 8pt; font-family: 'Courier New', Courier, monospace;"></p>
     <script type="text/javascript">
-      game_of_life.core.test();
+      game_of_life.test.run();
       game_of_life.core.init();
     </script>
   </body>

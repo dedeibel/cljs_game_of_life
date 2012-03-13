@@ -1,12 +1,14 @@
 <html>
-  <head></head>
+  <head>
+    <link href="web/css/dialog.css" rel="stylesheet"/>
+  </head>
   <body>
 		<h1>Clojurescript Game Of Life</h1>
     <script type="text/javascript" src="game_of_life.js"></script>
-    <pre id="ascii" style="display: none;">
-    </pre>
-    <div id="graphics"/>
-    <script>
+    <div id="graphics"></div>
+    <p id="ascii" style="font-size: 8pt; font-family: 'Courier New', Courier, monospace;"></p>
+    <script type="text/javascript">
+      game_of_life.test.run();
       game_of_life.core.init();
     </script>
   </body>
